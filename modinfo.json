@@ -1,0 +1,20 @@
+{
+  "author": "wondible",
+  "build": "89755",
+  "category": ["galactic-war"],
+  "context": "client",
+  "date": "2015/12/05",
+  "description": "Rejiggers Galactic War Difficulty",
+  "display_name": "GW Ramp",
+  "forum": null,
+  "identifier": "com.wondible.pa.gw_ramp",
+  "priority": 100,
+  "scenes": {
+    "gw_start": [
+      "coui://ui/mods/gw_ramp/gw_ramp.js"
+    ]
+  },
+  "signature": "not yet implemented",
+  "version": "0.1.0"
+}
+
