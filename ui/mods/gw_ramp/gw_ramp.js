@@ -2,6 +2,7 @@ requireGW([
     'shared/gw_common',
     'shared/gw_credits',
     'shared/gw_factions',
+    'shared/Graph',
     'pages/gw_start/gw_breeder',
     'pages/gw_start/gw_dealer',
     'pages/gw_start/gw_teams',
@@ -11,6 +12,7 @@ requireGW([
     GW,
     GWCredits,
     GWFactions,
+    Graph,
     GWBreeder,
     GWDealer,
     GWTeams,
@@ -165,6 +167,7 @@ requireGW([
         if (diffInfo.rampDifficulty) {
           ai.econ_rate = diffInfo.econBase + (dist * diffInfo.econRatePerDist);
           //console.log(ai.name + " setAI RATE: " + ai.econ_rate);
+          //console.log(ai.name, dist, ai.econ_rate)
 
           var sizeMod = GW.balance.galaxySizeDiffMod[model.newGameSizeIndex() || 0];
 
@@ -211,6 +214,8 @@ requireGW([
         //console.log("AI DIFF END: ");
       };
 
+      var graph = new Graph(game.galaxy().gates())
+
       _.forEach(teamInfo, function (info) {
         if (info.boss) {
           setAIData(info.boss, maxDist, true);
@@ -221,12 +226,32 @@ requireGW([
                           setAIData(minion, maxDist, true);
                         });
             }
+
+          var bossIndex = 0
+          game.galaxy().stars().forEach(function(star, i) {
+            if (star.ai() === info.boss) {
+              bossIndex = i
+            }
+          })
+          graph.calcDistance(bossIndex, function(i, d) {
+            game.galaxy().stars()[i].bossDistance = d
+          })
+          var bossDist = _.reduce(info.workers, function (value, worker) {
+            return Math.max(worker.star.bossDistance, value);
+          }, 0);
         }
         var distBase = Math.floor(diffInfo.econBase / diffInfo.econRatePerDist)
         _.forEach(info.workers, function (worker) {
-          var dist = worker.star.distance();
+          var index = 0
+          game.galaxy().stars().forEach(function(star, i) {
+            if (star === worker.star) {
+              index = i
+            }
+          })
+
+          var dist = worker.star.distance() + maxDist - worker.star.bossDistance*2
           var absDist = distBase + dist
-          var numMinions = Math.floor(Math.pow(Math.random() * dist, 0.66))
+          var numMinions = Math.floor(Math.pow(Math.random() * dist, 0.5))
           var pow = 2
           var dists = [Math.pow(absDist, pow)]
           _.times(numMinions, function() {
@@ -240,7 +265,7 @@ requireGW([
           dists = dists.map(function(d) {
             return Math.floor(Math.pow(d, 1/pow) - distBase)
           })
-          dists.sort()
+          dists.sort(function(a, b) { return b - a })
           //console.log(dist, absDist, dists.slice(0))
 
           setAIData(worker.ai, dists.pop(), false);
