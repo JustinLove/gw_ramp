@@ -251,17 +251,18 @@ requireGW([
 
           var dist = worker.star.distance() + maxDist - worker.star.bossDistance*2
           var absDist = distBase + dist
-          var numMinions = Math.floor(Math.pow(Math.random() * dist, 0.5))
+          var maxMinions = Math.floor(Math.pow(dist, 0.5))
+          var numMinions = 0
           var pow = 2
           var dists = [Math.pow(absDist, pow)]
-          _.times(numMinions, function() {
+          for (numMinions = 0;numMinions < maxMinions && Math.random() < 0.5;numMinions++) {
             var n = Math.floor(Math.random() * dists.length)
             var v = dists[n]
             var v1 = Math.random() * (v-1) + 1
             var v2 = v - v1
             dists[n] = v1
             dists.push(v2)
-          })
+          }
           dists = dists.map(function(d) {
             return Math.floor(Math.pow(d, 1/pow) - distBase)
           })
