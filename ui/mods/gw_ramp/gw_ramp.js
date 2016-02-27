@@ -255,10 +255,10 @@ requireGW([
           var numMinions = 0
           var pow = 2
           var dists = [Math.pow(absDist, pow)]
-          for (numMinions = 0;numMinions < maxMinions && Math.random() < 0.5;numMinions++) {
+          for (numMinions = 0;numMinions < maxMinions && Math.random() < 0.6;numMinions++) {
             var n = Math.floor(Math.random() * dists.length)
             var v = dists[n]
-            var v1 = Math.random() * (v-1) + 1
+            var v1 = (Math.random() + Math.random()) * 0.5 * (v-1) + 1
             var v2 = v - v1
             dists[n] = v1
             dists.push(v2)
@@ -266,7 +266,10 @@ requireGW([
           dists = dists.map(function(d) {
             return Math.floor(Math.pow(d, 1/pow) - distBase)
           })
-          dists.sort(function(a, b) { return b - a })
+          dists = dists.sort(function(a, b) { return b - a })
+          //console.log(dists.map(function(dist) {
+            //return diffInfo.econBase + (dist * diffInfo.econRatePerDist);
+          //}))
           //console.log(dist, absDist, dists.slice(0))
 
           setAIData(worker.ai, dists.pop(), false);
