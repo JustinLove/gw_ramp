@@ -6,4 +6,6 @@ Rather than adding minions independently of difficulty scaling, which creates a 
 
 Additionally, difficulty is increased by proximity to boss.
 
+Goes great with [Section of Foreign Intelligence](https://forums.uberent.com/threads/rel-section-of-foreign-intelligence.64173/)
+
 While it doesn't technically shadow `gw_start`, it punches out enough that it hardly matters.
