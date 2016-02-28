@@ -3,10 +3,10 @@
   "build": "89755",
   "category": ["galactic-war"],
   "context": "client",
-  "date": "2015/12/05",
-  "description": "Rejiggers Galactic War Difficulty",
+  "date": "2016/02/27",
+  "description": "Mixes up the number and strength of Galactic War enemy commanders.",
   "display_name": "GW Ramp",
-  "forum": null,
+  "forum": "https://forums.uberent.com/threads/rel-gw-ramp.71450/",
   "identifier": "com.wondible.pa.gw_ramp",
   "priority": 100,
   "scenes": {
@@ -15,6 +15,6 @@
     ]
   },
   "signature": "not yet implemented",
-  "version": "0.1.0"
+  "version": "1.0.0"
 }
 
