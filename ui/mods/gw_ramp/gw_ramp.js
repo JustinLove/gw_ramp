@@ -272,12 +272,12 @@ requireGW([
           //}))
           //console.log(dist, absDist, dists.slice(0))
 
-          setAIData(worker.ai, dists.pop(), false);
+          setAIData(worker.ai, dists.shift(), false);
           if (numMinions > 0) {
             worker.ai.minions = [];
             _.times(numMinions, function () {
               var mnn = _.sample(GWFactions[info.faction].minions);
-              setAIData(mnn, dists.pop(), false);
+              setAIData(mnn, dists.shift(), false);
               mnn.color = worker.ai.color;
               worker.ai.minions.push(mnn);
             });
