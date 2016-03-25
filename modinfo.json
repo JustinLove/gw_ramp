@@ -7,6 +7,7 @@
   "description": "Mixes up the number and strength of Galactic War enemy commanders.",
   "display_name": "GW Ramp",
   "forum": "https://forums.uberent.com/threads/rel-gw-ramp.71450/",
+  "icon": "http://wondible.com/pa/icons/gw_ramp.png",
   "identifier": "com.wondible.pa.gw_ramp",
   "priority": 100,
   "scenes": {
