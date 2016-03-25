@@ -294,15 +294,16 @@ requireGW([
           var maxMinions = Math.min(maxPlayers, Math.floor(Math.pow(dist, 0.5)))
           var numMinions = 0
           var pow = 2
+          var splitEffiency = 0.8
           var dists = [Math.pow(absDist, pow)]
           for (numMinions = 0;
                numMinions < maxMinions
                && (numMinions < minMinions || Math.random() < 0.6);
                numMinions++) {
             var n = Math.floor(Math.random() * dists.length)
-            var v = dists[n]
-            var v1 = (Math.random() + Math.random()) * 0.5 * (v-1) + 1
-            var v2 = v - v1
+            var v = dists[n] * splitEffiency
+            var v1 = ((Math.random() + Math.random()) * 0.5 * (v-1) + 1)
+            var v2 = (v - v1)
             dists[n] = v1
             dists.push(v2)
           }
@@ -310,9 +311,15 @@ requireGW([
             return Math.floor(Math.pow(d, 1/pow) - distBase)
           })
           dists = dists.sort(function(a, b) { return b - a })
-          //console.log(players, dists.map(function(dist) {
-            //return diffInfo.econBase + (dist * diffInfo.econRatePerDist);
-          //}))
+
+          /*
+          var challenge = Math.pow(dists.map(function(dist) {
+            return Math.pow(diffInfo.econBase + (dist * diffInfo.econRatePerDist), pow)
+          }).reduce(function(a, b) {return a + b}, 0), 1/pow)
+          console.log(players, absDist, challenge, dists.map(function(dist) {
+            return diffInfo.econBase + (dist * diffInfo.econRatePerDist);
+          }))
+          */
           //console.log(dist, absDist, dists.slice(0))
 
           setAIData(worker.ai, dists.shift(), false);
