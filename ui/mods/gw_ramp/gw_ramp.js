@@ -21,6 +21,43 @@ requireGW([
 ) {
   var baseNeutralStars = 2;
 
+  var estimatePlayers = function(system) {
+    if (system.players) return system.players
+
+    var lzPerPlayers = [0,0,0,0,0,0,0,0,0,0,0]
+    system.planets.forEach(function(planet) {
+      if (Array.isArray(planet.landing_zones)) {
+        for (var p = 2;p <= 10;p++) {
+          lzPerPlayers[p] = lzPerPlayers[p] + planet.landing_zones.length
+        }
+      } else if (planet.landing_zones) {
+        var lz = planet.landing_zones
+        var zones
+        for (var p = 2;p <= 10;p++) {
+          zones = 0
+          for (var i = 0;i < lz.rules.length;i++) {
+            if (lz.rules[i].min <= p && p <= lz.rules[i].max) {
+              zones++
+            }
+          }
+          lzPerPlayers[p] = lzPerPlayers[p] + zones
+        }
+      }
+    })
+    var players = lzPerPlayers
+      .map(function(n, p) {return Math.min(n, p)})
+      .filter(function(n) {return n != 0})
+    var mm = [2,10]
+    if (players.length > 0) {
+      mm = [
+        Math.min.apply(Math, players),
+        Math.max.apply(Math, players),
+      ]
+    }
+    //console.log(system.players, mm, lzPerPlayers)
+    return mm
+  }
+
   model.makeGame = function () {
     model.newGame(undefined);
 
@@ -251,11 +288,17 @@ requireGW([
 
           var dist = worker.star.distance() + maxDist - worker.star.bossDistance*2
           var absDist = distBase + dist
-          var maxMinions = Math.floor(Math.pow(dist, 0.5))
+          var players = estimatePlayers(worker.star.system())
+          var minMinions = Math.max(players[0] - 2, 0)
+          var maxPlayers = Math.max(players[1] - 4, minMinions)
+          var maxMinions = Math.min(maxPlayers, Math.floor(Math.pow(dist, 0.5)))
           var numMinions = 0
           var pow = 2
           var dists = [Math.pow(absDist, pow)]
-          for (numMinions = 0;numMinions < maxMinions && Math.random() < 0.6;numMinions++) {
+          for (numMinions = 0;
+               numMinions < maxMinions
+               && (numMinions < minMinions || Math.random() < 0.6);
+               numMinions++) {
             var n = Math.floor(Math.random() * dists.length)
             var v = dists[n]
             var v1 = (Math.random() + Math.random()) * 0.5 * (v-1) + 1
@@ -267,7 +310,7 @@ requireGW([
             return Math.floor(Math.pow(d, 1/pow) - distBase)
           })
           dists = dists.sort(function(a, b) { return b - a })
-          //console.log(dists.map(function(dist) {
+          //console.log(players, dists.map(function(dist) {
             //return diffInfo.econBase + (dist * diffInfo.econRatePerDist);
           //}))
           //console.log(dist, absDist, dists.slice(0))
