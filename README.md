@@ -1,4 +1,4 @@
-# GW Ramp
+# Enemy Ramp for galactic war
 
 Mixes up the number and strength of Galactic War enemy commanders.
 

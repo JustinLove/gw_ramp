@@ -1,11 +1,11 @@
 {
   "author": "wondible",
-  "build": "89755",
-  "category": ["galactic-war"],
+  "build": "94684",
+  "category": ["gw", "titans"],
   "context": "client",
-  "date": "2016/03/25",
+  "date": "2016/07/14",
   "description": "Mixes up the number and strength of Galactic War enemy commanders.",
-  "display_name": "GW Ramp",
+  "display_name": "Enemy Ramp for galactic war",
   "forum": "https://forums.uberent.com/threads/rel-gw-ramp.71450/",
   "icon": "http://wondible.com/pa/icons/gw_ramp.png",
   "identifier": "com.wondible.pa.gw_ramp",
@@ -16,6 +16,6 @@
     ]
   },
   "signature": "not yet implemented",
-  "version": "1.1.0"
+  "version": "1.1.1"
 }
 
